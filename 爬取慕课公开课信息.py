@@ -1,4 +1,4 @@
-﻿import time
+import time
 import requests
 import re
 import asyncio
@@ -46,7 +46,8 @@ async def aio_get_school_id_from_school_domain(school, session):
     assert response.status == 200  # 这是新学的一招，感觉很不错
     # response.encoding = 'utf-8'  # 经测试编码设置应该可以在session进行设置
     content = await response.text()
-    school_id = re.search(r'window.schoolId = "(?P<school_id>.*?)";', content).group('school_id')
+    school_id = re.search(
+        r'window.schoolId = "(?P<school_id>.*?)";', content).group('school_id')
     school['school_id'] = school_id
     # 这里设置一个异步协程检查点
     # print(f'现在返回了{school["school_name"]}的信息:{school_id}')
@@ -73,7 +74,8 @@ def get_school_id_from_school_domain_manager(schools_inf):
             for school in schools_inf:
                 # school_domain = school['href']  # 多一步中间变量传递没有坏处
                 # 直接传递school,方便插入信息
-                task = loop.create_task(aio_get_school_id_from_school_domain(school, session=session))
+                task = loop.create_task(
+                    aio_get_school_id_from_school_domain(school, session=session))
                 tasks.append(task)
             await asyncio.wait(tasks)
 
@@ -112,7 +114,8 @@ def parse_schools_domain():
     response.close()
     # 获取到主页的源码后，将数据通过正则表达式记录下来
     # 首先匹配到所有的学习的div
-    schools_inf = re.search(r'<div class="u-usitys f-cb">.*?</div>', response.text, re.S)
+    schools_inf = re.search(
+        r'<div class="u-usitys f-cb">.*?</div>', response.text, re.S)
     if schools_inf:
         # 此时成功获取到数据
         # print(schools_inf.group())
@@ -219,7 +222,8 @@ async def aio_get_schools_first_page_pages(schools, filename):
         for index, school in enumerate(schools):
             tasks.append(
                 asyncio.create_task(
-                    aio_get_school_inf(session, csrfKey, school, lock, filename, page=1, index=index)
+                    aio_get_school_inf(
+                        session, csrfKey, school, lock, filename, page=1, index=index)
                 )
             )
         await asyncio.wait(tasks)
@@ -245,7 +249,8 @@ async def aio_get_schools_other_pages(schools, filename):
             for page in range(2, school['pages']):
                 tasks.append(
                     asyncio.create_task(
-                        aio_get_school_inf(session, csrfKey, school, lock, filename, page=page, index=index)
+                        aio_get_school_inf(
+                            session, csrfKey, school, lock, filename, page=page, index=index)
                     )
                 )
                 index = index + 1
@@ -260,15 +265,18 @@ def main():
     if not os.path.exists(XLSX_IN_FILE_NAME):
         save_school_inf_to_excel_manager(XLSX_IN_FILE_NAME)
     # 此时配置文件已经存在
-    school_list = get_school_inf_from_excel(XLSX_IN_FILE_NAME)  # 每一项是一个字典，每个字典包含school_name和school_id
+    # 每一项是一个字典，每个字典包含school_name和school_id
+    school_list = get_school_inf_from_excel(XLSX_IN_FILE_NAME)
     # 此时学校的信息已经获取，接下来进入每一个学校进行分析网页
     prepare_output_file(CSV_OUT_FILE_NAME)
     # 创建事件循环
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(aio_get_schools_first_page_pages(school_list, CSV_OUT_FILE_NAME))
+    loop.run_until_complete(aio_get_schools_first_page_pages(
+        school_list, CSV_OUT_FILE_NAME))
     print(school_list)
     # 接下来对剩余的课程信息进行获取
-    loop.run_until_complete(aio_get_schools_other_pages(school_list, CSV_OUT_FILE_NAME))
+    loop.run_until_complete(aio_get_schools_other_pages(
+        school_list, CSV_OUT_FILE_NAME))
     print('所有任务正常完成')
 
 

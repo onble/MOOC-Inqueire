@@ -1,0 +1,5 @@
+aiocsv==1.2.2
+aiofiles==0.8.0
+aiohttp==3.8.1
+openpyxl==3.0.9
+requests==2.26.0
