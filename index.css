@@ -1,0 +1,349 @@
+body {
+    background-color: #f4f4f4;
+    --main_green: rgb(0, 199, 88)
+}
+a {
+    text-decoration: none;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0;
+}
+*{
+    margin: 0;
+    padding: 0;
+}
+.clearfix:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
+#center {
+    width: 80%;
+    margin: auto;
+    position: relative;
+}
+#search_box {
+    width: 78%;
+    box-sizing: border-box;
+    height: 52px;
+    min-width: 580px;
+    max-width: 596px;
+    white-space: nowrap;
+    /* top: 25px; */
+    position: relative;
+    z-index: 2;
+    margin: 25px 0 0 228px;
+    background-color: white;
+    border-radius: 22px;
+    box-shadow: 1px 3px 5px rgb(204 204 204 / 50%);
+}
+#search_box.return{
+    border-radius: 22px 22px 0 0;
+}
+#search_box input {
+    width: 100%;
+    height: 52px;
+    padding: 12px 16px;
+    box-sizing: border-box;
+    background-color: transparent;
+    outline: none;
+    border: 0;
+    font-size: 16px;
+}
+#search_box > form > div {
+    display: flex;
+}
+#search_box > form > div > div {
+    display: inline-block;
+}
+
+#search_box > form > div > div:first-child {
+    flex: 1;
+}
+#search_box > form > div > div:last-child {
+    cursor: pointer;
+    width: 52px;
+    height: 52px;
+    line-height: 52px;
+    text-align: center;
+    font-size: 30px;
+    color: #aaa;
+}
+#search_box > form > div > div:last-child:hover {
+    color: #ccc;
+}
+/* 定义提示搜索结果的内容样式 */
+#search_box > form >article{
+    background-color: white;
+    border-radius: 0 0px 22px 22px;
+    box-shadow: 1px 3px 5px rgb(204 204 204 / 50%);
+}
+#search_box > form >article>ul{
+    list-style: none;
+    width: 78%;
+    min-width: 580px;
+    max-width: 596px;
+    box-sizing: border-box;
+    position: relative;
+    max-height: 300px;
+    overflow: hidden;
+    padding: 0px 16px 12px 16px;
+    border-top: 1px solid #ccc;
+}
+#search_box > form >article>ul>li{
+    line-height: 2.5em;
+    border-bottom: 1px solid #ccc;
+    text-indent: 1.5em;
+    position: relative;
+}
+#search_box > form >article>ul>li:hover{
+    background-color: #eee;
+    cursor: pointer;
+}
+#search_box > form >article>ul>li>mark{
+    background-color: transparent;
+    position: absolute;
+    right: 50px;
+}
+#logo {
+    height: 64px;
+    box-sizing: border-box;
+}
+#top > div {
+    float: left;
+}
+#top h2 {
+    line-height: 64px;
+    font-size: 20px;
+    margin: 0;
+}
+#logo img {
+    width: 217px;
+    height: 32px;
+    padding: 16px;
+    display: block;
+}
+#search_box > nav {
+    width: 150px;
+    background-color: #fff;
+    border-radius: 5px;
+    position: absolute;
+    top: -20px;
+    right: -200px;
+    border: 1px solid #ccc;
+    box-shadow: 1px 3px 5px rgb(204 204 204 / 50%);
+}
+#search_box > nav span {
+    display: block;
+    text-align: center;
+    line-height: 2em;
+    font-size: 18px;
+    color: #999;
+}
+#search_box > nav > ul {
+    cursor: pointer;
+    list-style: none;
+    padding-left: 1em;
+    margin: 0 0 1em 0;
+    max-height: 100px;
+    overflow: auto;
+}
+#search_box > nav > ul > li {
+    line-height: 1.5em;
+    margin: 4px 0;
+    width: 90%;
+    border-bottom: 1px solid #d1e2ff;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background-color: #eee;
+    padding: 0 0.4em;
+    box-sizing: border-box;
+    font-size: 13px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+}
+#search_box > nav > ul > li.using {
+    background-color: #1dd1a1;
+}
+#search_box > nav > ul > li.choose {
+    border: 1px solid #1faf88;
+}
+body > div#center > nav{
+    font-size: 12px;
+}
+body > div#center > nav > form > table{
+    margin-left: 300px;
+    margin-top: 20px;
+}
+body > div#center > nav > form > table tr{
+    line-height: 2em;
+}
+body > div#center > nav > form > table select,
+body > div#center > nav > form > table input
+{
+    margin-left: 0.6em;
+}
+body > div#center > nav > form > table>tfoot>tr>th>mark{
+    width: 90px;
+    height: 25px;
+    border: none;
+    box-shadow: rgb(0 0 0 / 30%) 0px 2px 8px;
+    border-radius: 15px;
+    background-color: #fff;
+    margin-top: 10px;
+    display: inline-block;
+    font-weight: 600;
+    cursor: pointer;
+}
+body > div#center > nav > form > table>tfoot>tr>th>mark.forbid{
+    cursor: not-allowed;
+    background-color: #eee;
+}
+body > div#center > nav > form > table>tfoot>tr>th>mark:hover:not(.forbid){
+    color: var(--main_green);
+    background-color: #eee;
+}
+body > article {
+    width: 1225px;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 200px;
+    border-top: 6px solid var(--main_green);
+}
+body > article > h3::before {
+    content: "";
+    height: 1em;
+    border-left: 3px solid var(--main_green);
+}
+body > article > h3 {
+    padding: 0.8em 0 0.8em 1em;
+    margin: 0;
+    background-color: #fff;
+}
+body > article > main {
+    width: 100%;
+    padding-top: 20px;
+}
+body > article > main > section {
+    width: 228px;
+    float: left;
+    min-height: 238px;
+    z-index: 0;
+    font-size: 16px;
+    position: relative;
+    margin-bottom: 20px;
+    margin-right: 15px;
+    padding-bottom: 1.5em;
+    background-color: white;
+}
+body > article > main > section:hover{
+    box-shadow: rgb(0 0 0 / 30%) 0px 2px 8px;
+}
+body > article > main > section * {
+    color: #666;
+}
+body > article > main > section > a > h4 {
+    width: 203px;
+    height: 24px;
+    font-size: 14px;
+    line-height: 24px;
+    margin-bottom: 2em;
+    margin-top: 10px;
+}
+body > article > main > section img {
+    width: 228px;
+    height: 128px;
+}
+body > article > main > section > :nth-child(n+2):not(cite),
+body > article > main > section > a > h4 {
+    padding-left: 10px;
+}
+body > article > main > section  > div:nth-child(n+2){
+    font-size: 12px;
+    display: flex;
+}
+body > article > main > section  > div:nth-child(n+2)>span{
+    margin-left: 1em;
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+body > article > main > section >div.class_status.green,
+body > article > main > section >div.class_status.green>span
+{
+    color: green;
+}
+body > article > main > section >div.class_status.yellow,
+body > article > main > section >div.class_status.yellow>span
+{
+    color: #0070ff;
+}
+body > article > main > section >div.class_status.red,
+body > article > main > section >div.class_status.red>span
+{
+    color: red;
+}
+body > article > main > section >div.class_status.orange,
+body > article > main > section >div.class_status.orange>span
+{
+    color: orange;
+}
+body > article > main > section  > div:nth-child(2) > span >a:hover{
+    color: var(--main_green);
+}
+body > article > main > section > cite{
+    font-size: 12px;
+    color: #EEB02D;
+    border: 1px solid #EEB02D;
+    font-style: normal;
+    position: absolute;
+    top: 170px;
+    left: 140px;
+    padding: 0 2px;
+}
+body > article > nav{
+    text-align: center;
+    margin-top: 70px;
+}
+body > article > nav > ul{
+    list-style: none;
+    font-size: 0;
+}
+body > article > nav > ul > li{
+    display: inline-block;
+    color: #999;
+    font-size: 12px;
+}
+body > article > nav > ul > li:not(.symbol){
+    background-color: #fff;
+    border: 1px solid #ddd;
+    line-height: 30px;
+    min-width: 30px;
+    margin: 0 2px;
+    padding: 0 1em;
+    box-sizing: border-box;
+    text-align: center;
+    cursor: pointer;
+}
+body > article > nav > ul > li:not(.symbol):not(.forbid):hover,
+body > article > nav > ul > li.current{
+    color: #fff;
+    background-color: var(--main_green);
+}
+body > article > nav > ul > li.forbid{
+    cursor: not-allowed;
+    background-color: #ddd;
+}
+body > article > footer{
+    color: #ff246f;
+}

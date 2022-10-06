@@ -9,6 +9,8 @@ import os
 from openpyxl import Workbook, load_workbook
 import datetime
 import json
+import csv
+import webbrowser
 
 fake_ug = {
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
@@ -46,8 +48,7 @@ async def aio_get_school_id_from_school_domain(school, session):
     assert response.status == 200  # 这是新学的一招，感觉很不错
     # response.encoding = 'utf-8'  # 经测试编码设置应该可以在session进行设置
     content = await response.text()
-    school_id = re.search(
-        r'window.schoolId = "(?P<school_id>.*?)";', content).group('school_id')
+    school_id = re.search(r'window.schoolId = "(?P<school_id>.*?)";', content).group('school_id')
     school['school_id'] = school_id
     # 这里设置一个异步协程检查点
     # print(f'现在返回了{school["school_name"]}的信息:{school_id}')
@@ -74,8 +75,7 @@ def get_school_id_from_school_domain_manager(schools_inf):
             for school in schools_inf:
                 # school_domain = school['href']  # 多一步中间变量传递没有坏处
                 # 直接传递school,方便插入信息
-                task = loop.create_task(
-                    aio_get_school_id_from_school_domain(school, session=session))
+                task = loop.create_task(aio_get_school_id_from_school_domain(school, session=session))
                 tasks.append(task)
             await asyncio.wait(tasks)
 
@@ -114,8 +114,7 @@ def parse_schools_domain():
     response.close()
     # 获取到主页的源码后，将数据通过正则表达式记录下来
     # 首先匹配到所有的学习的div
-    schools_inf = re.search(
-        r'<div class="u-usitys f-cb">.*?</div>', response.text, re.S)
+    schools_inf = re.search(r'<div class="u-usitys f-cb">.*?</div>', response.text, re.S)
     if schools_inf:
         # 此时成功获取到数据
         # print(schools_inf.group())
@@ -222,8 +221,7 @@ async def aio_get_schools_first_page_pages(schools, filename):
         for index, school in enumerate(schools):
             tasks.append(
                 asyncio.create_task(
-                    aio_get_school_inf(
-                        session, csrfKey, school, lock, filename, page=1, index=index)
+                    aio_get_school_inf(session, csrfKey, school, lock, filename, page=1, index=index)
                 )
             )
         await asyncio.wait(tasks)
@@ -249,35 +247,78 @@ async def aio_get_schools_other_pages(schools, filename):
             for page in range(2, school['pages']):
                 tasks.append(
                     asyncio.create_task(
-                        aio_get_school_inf(
-                            session, csrfKey, school, lock, filename, page=page, index=index)
+                        aio_get_school_inf(session, csrfKey, school, lock, filename, page=page, index=index)
                     )
                 )
                 index = index + 1
         await asyncio.wait(tasks)
 
 
+def save_date2js(csv_filename, js_filename, data):
+    with open(csv_filename) as csvfile:
+        csv_reader = csv.reader(csvfile)
+        result = list(csv_reader)
+        # 打开一个新的js文件进行写操作
+        with open(js_filename, mode='w+', encoding='utf-8') as js_file:
+            js_file.write(f'var datas_{data} = {str(result)};')
+
+
+def info2parm_js(data, filename='param.js'):
+    with open(filename, mode='r+') as param_file:
+        in_str = param_file.read()
+        # 对读入字符串进行正则匹配
+        array = re.search(r'(?P<array>\[.*?])', in_str, re.S)
+        assert array
+        array = array.group('array')
+        # 将内容转换为列表
+        array = json.loads(array)
+        array.insert(0, data)
+        param_file.seek(0)
+        param_file.truncate()  # 清空文件
+        array = json.dumps(array)
+        array = f'var db = {array};'
+        array.replace("'", '"')
+        param_file.write(array)
+
+
 def main():
     """主函数，完整程序的起点"""
     # 定义常量
     XLSX_IN_FILE_NAME = 'schools_inf.xlsx'
-    CSV_OUT_FILE_NAME = f'course_{datetime.date.today().__format__("%Y_%m_%d")}.csv'
+    PARAM_JS_FILE_NAME = 'param.js'
+    today_data = datetime.date.today().__format__("%Y_%m_%d")
+    CSV_OUT_FILE_NAME = f'course_{today_data}.csv'
+    JS_OUT_FILE_NAME = f'course_{today_data}.js'
     if not os.path.exists(XLSX_IN_FILE_NAME):
         save_school_inf_to_excel_manager(XLSX_IN_FILE_NAME)
     # 此时配置文件已经存在
-    # 每一项是一个字典，每个字典包含school_name和school_id
-    school_list = get_school_inf_from_excel(XLSX_IN_FILE_NAME)
+    school_list = get_school_inf_from_excel(XLSX_IN_FILE_NAME)  # 每一项是一个字典，每个字典包含school_name和school_id
     # 此时学校的信息已经获取，接下来进入每一个学校进行分析网页
     prepare_output_file(CSV_OUT_FILE_NAME)
     # 创建事件循环
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(aio_get_schools_first_page_pages(
-        school_list, CSV_OUT_FILE_NAME))
+    loop.run_until_complete(aio_get_schools_first_page_pages(school_list, CSV_OUT_FILE_NAME))
     print(school_list)
-    # 接下来对剩余的课程信息进行获取
-    loop.run_until_complete(aio_get_schools_other_pages(
-        school_list, CSV_OUT_FILE_NAME))
+    # 对剩余的课程信息进行获取
+    loop.run_until_complete(aio_get_schools_other_pages(school_list, CSV_OUT_FILE_NAME))
     print('所有任务正常完成')
+    # 将数据转储到js文件中
+    save_date2js(CSV_OUT_FILE_NAME, JS_OUT_FILE_NAME, today_data)
+    # 将新的文件信息写入param.js文件中
+    info2parm_js(today_data, PARAM_JS_FILE_NAME)
+    webbrowser.open('index.html')
+
+
+def csvfile_append_url(filename):
+    with open(filename, mode='r+', newline='') as csvfile:
+        csv_reader = csv.reader(csvfile)
+        result = list(csv_reader)
+        for index_row in range(1, len(result)):
+            result[index_row].append(f'https://www.icourse163.org/course/{result[index_row][8]}-{result[index_row][0]}')
+        csvfile.seek(0)
+        csvfile.truncate()
+        csv_writer = csv.writer(csvfile)
+        csv_writer.writerows(result)
 
 
 def test():
@@ -285,12 +326,6 @@ def test():
     用来测试的函数
     :return:
     """
-    school_id = 13001
-    school_url = 'https://www.icourse163.org/university/PKU'
-    filename = 'course.csv'
-    # 创建一个新的表格
-    if os.path.exists(filename):
-        os.remove(filename)
 
 
 if __name__ == '__main__':

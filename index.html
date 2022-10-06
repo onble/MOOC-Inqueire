@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>慕课信息检索</title>
+        <base target="_blank" />
+        <link
+            rel="shortcut icon"
+            href="http://edu-image.nosdn.127.net/32a8dd2a-b9aa-4ec9-abd5-66cd8751befb.png?imageView&quality=100"
+        />
+        <link
+            href="https://cdn.bootcss.com/font-awesome/5.13.0/css/all.css"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="./index.css" />
+    </head>
+    <body>
+        <div id="center">
+            <div id="top" class="clearfix">
+                <div id="logo">
+                    <a href="https://www.icourse163.org/"
+                        ><img
+                            src="http://edu-image.nosdn.127.net/3310f128e53b406f94400f7ae6046db2.png?imageView&quality=100"
+                            alt="中国大学慕课官网"
+                    /></a>
+                </div>
+                <div><h2>慕课信息检索</h2></div>
+            </div>
+            <div id="search_box">
+                <form action="#">
+                    <div>
+                        <div>
+                            <input type="text" placeholder="请输入搜索词" />
+                            <!-- 下面的input用来阻止默认的表单提交 -->
+                            <input type="text" style="display: none" />
+                        </div>
+                        <div>
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                    <article style="display: none">
+                        <ul></ul>
+                    </article>
+                </form>
+                <nav>
+                    <span>当前数据列表</span>
+                    <ul></ul>
+                </nav>
+            </div>
+            <nav>
+                <form action="#" name="collation">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    根据课程名称:
+                                    <select name="class_name">
+                                        <option value="no">无排序</option>
+                                        <option value="up">升序</option>
+                                        <option value="down">降序</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    根据订阅人数:
+                                    <select name="people_num">
+                                        <option value="down">降序</option>
+                                        <option value="up">升序</option>
+                                        <option value="no">无排序</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    根据开课时间:
+                                    <select name="open_time">
+                                        <option value="no">无排序</option>
+                                        <option value="up">升序</option>
+                                        <option value="down">降序</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    根据结课时间:
+                                    <select name="close_time">
+                                        <option value="no">无排序</option>
+                                        <option value="up">升序</option>
+                                        <option value="down">降序</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    根据教师姓名:
+                                    <select name="teacher_name">
+                                        <option value="no">无排序</option>
+                                        <option value="up">升序</option>
+                                        <option value="down">降序</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    根据学校姓名:
+                                    <select name="school_name">
+                                        <option value="no">无排序</option>
+                                        <option value="up">升序</option>
+                                        <option value="down">降序</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    包含课程状态:
+                                    <input
+                                        type="checkbox"
+                                        name="doing"
+                                        id="class_status_doing"
+                                        checked
+                                    />
+                                    <label for="class_status_doing"
+                                        >正在进行</label
+                                    >
+                                    <input
+                                        type="checkbox"
+                                        name="learn"
+                                        id="class_status_learn"
+                                        checked
+                                    />
+                                    <label for="class_status_learn"
+                                        >可自学</label
+                                    >
+                                    <input
+                                        type="checkbox"
+                                        name="waiting"
+                                        id="class_status_waiting"
+                                        checked
+                                    />
+                                    <label for="class_status_waiting"
+                                        >预定开课</label
+                                    >
+                                    <input
+                                        type="checkbox"
+                                        name="close"
+                                        id="class_status_close"
+                                        checked
+                                    />
+                                    <label for="class_status_close"
+                                        >已关闭</label
+                                    >
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="2">
+                                    <mark class="forbid">更新</mark>
+                                </th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </form>
+            </nav>
+        </div>
+        <article>
+            <h3>检索结果</h3>
+            <main class="clearfix"></main>
+            <nav>
+                <ul></ul>
+            </nav>
+            <footer>
+                <i class="fa fa-binoculars" aria-hidden="true"></i
+                >当前无结果，请更换检索词!
+            </footer>
+        </article>
+        <script src="./param.js"></script>
+        <script src="./index.js"></script>
+    </body>
+</html>
